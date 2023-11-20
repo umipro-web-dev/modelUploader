@@ -47,7 +47,7 @@ app.post("/upload", async (req, res)=>{
     }
 
     if (!fs.existsSync(`./repo/objects/${body.eachNumber.toString()}/obj.mtl`)) {
-        execSync("cd repo && git pull origin main")
+        execSync('cd repo && GIT_SSH_COMMAND="ssh -i ../modelUploaderKey" git pull origin main')
         res.status(415).json({
             msg: "invalid content type"
         })
@@ -55,7 +55,7 @@ app.post("/upload", async (req, res)=>{
     }
     execSync("cd repo && git add .")
     execSync(`cd repo && git commit -m "upload by user: ${body.eachNumber.toString()}"`)
-    execSync("cd repo && git push origin main")
+    execSync('cd repo && GIT_SSH_COMMAND="ssh -i ../modelUploaderKey" git push origin main')
     res.status(200).json({
         msg: "finished nomally"
     })
