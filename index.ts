@@ -3,7 +3,6 @@ import * as fs from "fs"
 import {execSync} from "child_process"
 import {fileTypeFromBuffer} from 'file-type';
 import { fileURLToPath } from 'url';
-import { Open } from "unzipper";
 import decompress from "decompress"
 import path from "path"
 const app = express()
