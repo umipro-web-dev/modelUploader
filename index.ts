@@ -18,6 +18,7 @@ interface reqType {
 }
 app.use(express.json())
 app.post("/upload", async (req, res)=>{
+    
     if (req.headers["content-type"] !== "application/json") {
         res.status(415).json({
             errCode: 1,
@@ -53,7 +54,9 @@ app.post("/upload", async (req, res)=>{
         filter: file => path.basename(file.path) === "obj.mtl" || path.basename(file.path) === "tinker.obj"
     })
 
-    execSync(`mkdir ${objectsPath}`)
+
+
+    if (!fs.existsSync(objectsPath)) execSync(`mkdir ${objectsPath}`)
 
     modelFiles.forEach(file => fs.writeFileSync(objectsPath+"/"+path.basename(file.path), file.data))
 
@@ -75,12 +78,19 @@ app.post("/upload", async (req, res)=>{
         return
     }
     execSync("cd ar && git add .", shellType)
+    try {
+    
     execSync(`cd ar && git commit -m "upload by user: ${body.eachNumber.toString()}"`, shellType)
+
+    } catch(e){}
+
     execSync('cd ar && GIT_SSH_COMMAND="ssh -i ../autoUpload" git push origin main', shellType)
     res.status(200).json({
         errCode: null,
         msg: "successed"
     })
+
+    
 
 })
 
