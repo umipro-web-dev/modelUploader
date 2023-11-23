@@ -2,62 +2,81 @@ import express from "express"
 import * as fs from "fs"
 import {execSync} from "child_process"
 import {fileTypeFromBuffer} from 'file-type';
+import { fileURLToPath } from 'url';
+import path from "path"
 const app = express()
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
 
 interface reqType {
     eachNumber: number,
     encodedFile: string
 }
-
+app.use(express.json())
 app.post("/upload", async (req, res)=>{
-    if (req.header["content-type"] !== "application/json") {
+    if (req.headers["content-type"] !== "application/json") {
         res.status(415).json({
-            error: "invalid content type"
+            errCode: 1,
+            msg: "invalid content type: request should be json"
         })
         return
     }
 
     const body = req.body as reqType
 
+    console.log(body)
+
     const rawFile = Buffer.from(body.encodedFile, "base64")
 
     if ((await fileTypeFromBuffer(rawFile))?.ext !== "zip") {
         res.status(415).json({
-            error: "invalid content type"
+            errCode: 2,
+            msg: "invalid content type: file should be zip"
         })
         return
     }
 
-    const zipFilePath = `./repo/objects/${`./repo/objects/${body.eachNumber.toString()}.zip`}.zip`
-    const objectsPath = `./repo/objects/`
+    const shellType = {
+        shell: "bash"
+    }
 
-    execSync("cd repo && git pull origin main")
+    const zipFilePath = __dirname+`/ar/objects/${body.eachNumber.toString()}.zip`
+    const objectsPath = __dirname+`/ar/objects/${body.eachNumber.toString()}`
+
+    execSync('cd ar && GIT_SSH_COMMAND="ssh -i ../autoUpload" git pull origin main', shellType)
 
     fs.writeFileSync(zipFilePath, rawFile)
 
-    execSync(`npx extract-zip ${zipFilePath} ${objectsPath}`)
-    execSync(`rm ${zipFilePath}`)
+    execSync(`npx extract-zip ${zipFilePath} ${objectsPath}`, shellType)
+    execSync(`rm ${zipFilePath}`, shellType)
+    execSync(`find ${objectsPath} -name 'tinker.obj' -or -name 'obj.mtl' | xargs -I% mv % ${objectsPath}`)
+    execSync(`find ${objectsPath} -type d -delete`)
 
-    if (!fs.existsSync(`./repo/objects/${body.eachNumber.toString()}/tinker.obj`)) {
-        execSync("cd repo && git pull origin main")
+    if (!fs.existsSync(`./ar/objects/${body.eachNumber.toString()}/tinker.obj`)) {
+        execSync('cd ar && GIT_SSH_COMMAND="ssh -i ../autoUpload" git pull origin main', shellType)
         res.status(415).json({
-            msg: "invalid content type"
+            errCode: 3,
+            msg: "invalid content type: zip file should be include tinker.obj"
         })
         return
     }
 
-    if (!fs.existsSync(`./repo/objects/${body.eachNumber.toString()}/obj.mtl`)) {
-        execSync('cd repo && GIT_SSH_COMMAND="ssh -i ../modelUploaderKey" git pull origin main')
+    if (!fs.existsSync(`./ar/objects/${body.eachNumber.toString()}/obj.mtl`)) {
+        execSync('cd ar && GIT_SSH_COMMAND="ssh -i ../autoUpload" git pull origin main', shellType)
         res.status(415).json({
-            msg: "invalid content type"
+            errCode: 4,
+            msg: "invalid content type: zip file should be include obj.mtl"
         })
         return
     }
-    execSync("cd repo && git add .")
-    execSync(`cd repo && git commit -m "upload by user: ${body.eachNumber.toString()}"`)
-    execSync('cd repo && GIT_SSH_COMMAND="ssh -i ../modelUploaderKey" git push origin main')
+    execSync("cd ar && git add .", shellType)
+    execSync(`cd ar && git commit -m "upload by user: ${body.eachNumber.toString()}"`, shellType)
+    execSync('cd ar && GIT_SSH_COMMAND="ssh -i ../autoUpload" git push origin main', shellType)
     res.status(200).json({
-        msg: "finished nomally"
+        errCode: null,
+        msg: "successed"
     })
 
 })
