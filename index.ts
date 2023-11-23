@@ -51,8 +51,8 @@ app.post("/upload", async (req, res)=>{
 
     execSync(`npx extract-zip ${zipFilePath} ${objectsPath}`, shellType)
     execSync(`rm ${zipFilePath}`, shellType)
-    execSync(`find ${objectsPath} -name 'tinker.obj' -or -name 'obj.mtl' | xargs -I% mv % ${objectsPath}`, shellType)
-    execSync(`find ${objectsPath} -type d -exec rm -rf {} + `, shellType)
+    execSync(`for d in */; do mv "$d"{obj.mtl,tinker.obj} "$d"; done`, shellType)
+    execSync(`find ${objectsPath}/ -type d -exec rm -rf {} + `, shellType)
 
     if (!fs.existsSync(`./ar/objects/${body.eachNumber.toString()}/tinker.obj`)) {
         execSync('cd ar && GIT_SSH_COMMAND="ssh -i ../autoUpload" git pull origin main', shellType)
