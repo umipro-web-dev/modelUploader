@@ -18,6 +18,9 @@ interface reqType {
 }
 app.use(express.json())
 app.post("/upload", async (req, res)=>{
+
+    execSync('git config user.name "umipro-web-dev"')
+    execSync('git config user.email "113771739+umipro-web-dev@users.noreply.github.com"')
     
     if (req.headers["content-type"] !== "application/json") {
         res.status(415).json({
