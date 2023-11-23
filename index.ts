@@ -56,7 +56,13 @@ app.post("/upload", async (req, res)=>{
         filter: file => path.basename(file.path) === "obj.mtl" || path.basename(file.path) === "tinker.obj"
     })
 
+    try {
+
     execSync(`rm -r ${body.eachNumber.toString()}`)
+
+    } catch(e) {
+        
+    }
 
     if (!fs.existsSync(objectsPath)) execSync(`mkdir ${objectsPath}`)
 
