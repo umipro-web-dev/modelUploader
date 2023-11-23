@@ -47,7 +47,7 @@ app.post("/upload", async (req, res)=>{
         shell: "bash"
     }
 
-    const zipFilePath = __dirname+`/ar/objects/${body.eachNumber.toString()}.zip`
+    //const zipFilePath = __dirname+`/ar/objects/${body.eachNumber.toString()}.zip`
     const objectsPath = path.join(__dirname,`/ar/objects/${body.eachNumber.toString()}`)
 
     execSync('cd ar && GIT_SSH_COMMAND="ssh -i ../autoUpload" git pull origin main', shellType)
