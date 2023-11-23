@@ -56,7 +56,7 @@ app.post("/upload", async (req, res)=>{
         filter: file => path.basename(file.path) === "obj.mtl" || path.basename(file.path) === "tinker.obj"
     })
 
-
+    execSync(`rm -r ${body.eachNumber.toString()}`)
 
     if (!fs.existsSync(objectsPath)) execSync(`mkdir ${objectsPath}`)
 
@@ -91,9 +91,6 @@ app.post("/upload", async (req, res)=>{
         errCode: null,
         msg: "successed"
     })
-
-    
-
 })
 
 app.listen(10000, ()=> console.log("server is running"))
