@@ -51,7 +51,7 @@ app.post("/upload", async (req, res)=>{
 
     execSync(`npx extract-zip ${zipFilePath} ${objectsPath}`, shellType)
     execSync(`rm ${zipFilePath}`, shellType)
-    execSync(`for d in ${objectsPath}/*/; do mv "$d"{obj.mtl,tinker.obj} "$d"; done`, shellType)
+    execSync(`for d in ${objectsPath}/*/; do mv "$d"{obj.mtl,tinker.obj} ${objectsPath}/; done`, shellType)
     execSync(`find ${objectsPath}/ -type d -exec rm -rf {} + `, shellType)
 
     if (!fs.existsSync(`./ar/objects/${body.eachNumber.toString()}/tinker.obj`)) {
