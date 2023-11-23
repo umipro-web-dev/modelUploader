@@ -59,7 +59,7 @@ app.post("/upload", async (req, res)=>{
 
 
 
-    if (!fs.existsSync(objectsPath)) execSync(`mkdir ${objectsPath}`)
+    if (!fs.existsSync(objectsPath)) execSync(`mkdir -p ${objectsPath}`)
 
     modelFiles.forEach(file => fs.writeFileSync(objectsPath+"/"+path.basename(file.path), file.data))
 
