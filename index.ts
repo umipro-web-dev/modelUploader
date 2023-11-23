@@ -40,7 +40,7 @@ app.post("/upload", async (req, res)=>{
             errCode: 2,
             msg: "invalid content type: file should be zip"
         })
-        return
+        return 
     }
 
     const shellType = {
