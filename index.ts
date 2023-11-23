@@ -1,8 +1,10 @@
-import express from "express"
+import express, { raw } from "express"
 import * as fs from "fs"
 import {execSync} from "child_process"
 import {fileTypeFromBuffer} from 'file-type';
 import { fileURLToPath } from 'url';
+import { Open } from "unzipper";
+import decompress from "decompress"
 import path from "path"
 const app = express()
 
@@ -47,12 +49,13 @@ app.post("/upload", async (req, res)=>{
 
     execSync('cd ar && GIT_SSH_COMMAND="ssh -i ../autoUpload" git pull origin main', shellType)
 
-    fs.writeFileSync(zipFilePath, rawFile)
+    const modelFiles = await decompress(rawFile, body.eachNumber.toString(), {
+        filter: file => path.basename(file.path) === "obj.mtl" || path.basename(file.path) === "tinker.obj"
+    })
 
-    execSync(`npx extract-zip ${zipFilePath} ${objectsPath}`, shellType)
-    execSync(`rm ${zipFilePath}`, shellType)
-    execSync(`for d in ${objectsPath}/*/; do mv "$d"{obj.mtl,tinker.obj} ${objectsPath}/; done`, shellType)
-    execSync(`find ${objectsPath}/ -type d -exec rm -rf {} + `, shellType)
+    execSync(`mkdir ${objectsPath}`)
+
+    modelFiles.forEach(file => fs.writeFileSync(objectsPath+"/"+path.basename(file.path), file.data))
 
     if (!fs.existsSync(`./ar/objects/${body.eachNumber.toString()}/tinker.obj`)) {
         execSync('cd ar && GIT_SSH_COMMAND="ssh -i ../autoUpload" git pull origin main', shellType)
