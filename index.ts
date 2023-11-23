@@ -48,19 +48,19 @@ app.post("/upload", async (req, res)=>{
     }
 
     const zipFilePath = __dirname+`/ar/objects/${body.eachNumber.toString()}.zip`
-    const objectsPath = __dirname+`/ar/objects/${body.eachNumber.toString()}`
+    const objectsPath = path.join(__dirname,`/ar/objects/${body.eachNumber.toString()}`)
 
     execSync('cd ar && GIT_SSH_COMMAND="ssh -i ../autoUpload" git pull origin main', shellType)
 
-    const modelFiles = await decompress(rawFile, body.eachNumber.toString(), {
+    const modelFiles = await decompress(rawFile, undefined, {
         filter: file => path.basename(file.path) === "obj.mtl" || path.basename(file.path) === "tinker.obj"
     })
 
 
 
-    if (!fs.existsSync(objectsPath)) execSync(`mkdir -p ${objectsPath}`)
+    if (!fs.existsSync(objectsPath)) execSync(`mkdir ${objectsPath}`)
 
-    modelFiles.forEach(file => fs.writeFileSync(objectsPath+"/"+path.basename(file.path), file.data))
+    modelFiles.forEach(file => fs.writeFileSync(path.join(objectsPath,path.basename(file.path)), file.data))
 
     if (!fs.existsSync(`./ar/objects/${body.eachNumber.toString()}/tinker.obj`)) {
         execSync('cd ar && GIT_SSH_COMMAND="ssh -i ../autoUpload" git pull origin main', shellType)
