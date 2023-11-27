@@ -88,7 +88,7 @@ app.post("/upload", async (req, res)=>{
     execSync("cd ar && git add .", shellType)
     try {
     
-    execSync(`cd ar && upload by user: ${body.eachNumber.toString()}"`, shellType)
+    execSync(`cd ar && git commit -m "upload by user: ${body.eachNumber.toString()}"`, shellType)
 
     } catch(e){}
 
