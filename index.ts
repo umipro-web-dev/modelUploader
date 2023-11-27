@@ -61,7 +61,7 @@ app.post("/upload", async (req, res)=>{
     execSync(`rm -r ${body.eachNumber.toString()}`)
 
     } catch(e) {
-        
+
     }
 
     if (!fs.existsSync(objectsPath)) execSync(`mkdir ${objectsPath}`)
@@ -98,5 +98,6 @@ app.post("/upload", async (req, res)=>{
         msg: "successed"
     })
 })
+
 
 app.listen(10000, ()=> console.log("server is running"))
