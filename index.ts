@@ -6,6 +6,8 @@ import { fileURLToPath } from 'url';
 import decompress from "decompress"
 import path from "path"
 const app = express()
+// 
+// 
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -50,7 +52,7 @@ app.post("/upload", async (req, res)=>{
     //const zipFilePath = __dirname+`/ar/objects/${body.eachNumber.toString()}.zip`
     const objectsPath = path.join(__dirname,`/ar/objects/${body.eachNumber.toString()}`)
 
-    execSync('cd ar && GIT_SSH_COMMAND="ssh -i ../autoUpload" git pull origin main', shellType)
+    execSync('cd ar && git pull origin main', shellType)
 
     const modelFiles = await decompress(rawFile, undefined, {
         filter: file => path.basename(file.path) === "obj.mtl" || path.basename(file.path) === "tinker.obj"
@@ -69,7 +71,7 @@ app.post("/upload", async (req, res)=>{
     modelFiles.forEach(file => fs.writeFileSync(path.join(objectsPath,path.basename(file.path)), file.data))
 
     if (!fs.existsSync(`./ar/objects/${body.eachNumber.toString()}/tinker.obj`)) {
-        execSync('cd ar && GIT_SSH_COMMAND="ssh -i ../autoUpload" git pull origin main', shellType)
+        execSync('cd ar && git pull origin main', shellType)
         res.status(415).json({
             errCode: 3,
             msg: "invalid content type: zip file should be include tinker.obj"
@@ -78,7 +80,7 @@ app.post("/upload", async (req, res)=>{
     }
 
     if (!fs.existsSync(`./ar/objects/${body.eachNumber.toString()}/obj.mtl`)) {
-        execSync('cd ar && GIT_SSH_COMMAND="ssh -i ../autoUpload" git pull origin main', shellType)
+        execSync('cd ar && git pull origin main', shellType)
         res.status(415).json({
             errCode: 4,
             msg: "invalid content type: zip file should be include obj.mtl"
@@ -92,7 +94,7 @@ app.post("/upload", async (req, res)=>{
 
     } catch(e){}
 
-    execSync('cd ar && GIT_SSH_COMMAND="ssh -i ../autoUpload" git push origin main', shellType)
+    execSync('cd ar && git push origin main', shellType)
     res.status(200).json({
         errCode: null,
         msg: "successed"
