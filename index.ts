@@ -31,8 +31,6 @@ app.post("/upload", async (req, res)=>{
 
     const body = req.body as reqType
 
-    console.log(body)
-
     const rawFile = Buffer.from(body.encodedFile, "base64")
 
     if ((await fileTypeFromBuffer(rawFile))?.ext !== "zip") {
@@ -47,7 +45,6 @@ app.post("/upload", async (req, res)=>{
         shell: "bash"
     }
 
-    //const zipFilePath = __dirname+`/ar/objects/${body.eachNumber.toString()}.zip`
     const objectsPath = path.join(__dirname,`/ar/objects/${body.eachNumber.toString()}`)
 
     execSync("cd ar && git checkout main")
@@ -79,10 +76,6 @@ app.post("/upload", async (req, res)=>{
         })
         return
     }
-
-    const out = execSync("cd ./ar/objects/ && ls -a")
-
-    console.log(out.toString("utf-8"))
 
     execSync("cd ar && git add .", shellType)
     try {
