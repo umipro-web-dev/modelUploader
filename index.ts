@@ -6,8 +6,6 @@ import { fileURLToPath } from 'url';
 import decompress from "decompress"
 import path from "path"
 const app = express()
-// 
-// 
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -57,14 +55,6 @@ app.post("/upload", async (req, res)=>{
     const modelFiles = await decompress(rawFile, undefined, {
         filter: file => path.basename(file.path) === "obj.mtl" || path.basename(file.path) === "tinker.obj"
     })
-
-    try {
-
-    execSync(`rm -r ${body.eachNumber.toString()}`)
-
-    } catch(e) {
-
-    }
 
     if (!fs.existsSync(objectsPath)) execSync(`mkdir ${objectsPath}`)
 
