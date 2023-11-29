@@ -89,7 +89,7 @@ app.post("/upload", async (req, res)=>{
 
     } catch(e){}
 
-    execSync('cd ar && git push origin main', shellType)
+    execSync('cd ar && git push origin HEAD', shellType)
     res.status(200).json({
         errCode: null,
         msg: "successed"
