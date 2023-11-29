@@ -77,6 +77,11 @@ app.post("/upload", async (req, res)=>{
         })
         return
     }
+
+    const out = execSync("cd ./ar/objects/ && ls -a")
+
+    console.log(out.toString("utf-8"))
+
     execSync("cd ar && git add .", shellType)
     try {
     
