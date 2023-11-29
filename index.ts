@@ -50,6 +50,8 @@ app.post("/upload", async (req, res)=>{
     //const zipFilePath = __dirname+`/ar/objects/${body.eachNumber.toString()}.zip`
     const objectsPath = path.join(__dirname,`/ar/objects/${body.eachNumber.toString()}`)
 
+    execSync("cd ar && git checkout main")
+
     execSync('cd ar && git pull origin main', shellType)
 
     const modelFiles = await decompress(rawFile, undefined, {
