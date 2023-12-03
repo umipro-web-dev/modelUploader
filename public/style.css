@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+html, body {
+	margin: 0 !important;
+	height: 100%;
+	background-color: #0f172b;
+	color: #e5e7eb;
+	font-family: 'Noto Sans JP', sans-serif;
+}
+
+header {
+	background-color: black;
+	border-bottom: 3px solid #46ff32c1;
+	color: #e5e7eb;
+	height: 5em;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	a {
+		color: #e5e7eb;
+		text-decoration: none;
+		
+	}
+	a:hover {
+		color: #c0bcbc;
+		transition: 0.3s;
+	}
+	
+}
+
+.titleBlock {
+	height: fit-content;
+
+	h {
+		display: block;
+		margin-left: 1em;
+		font-weight: 700;
+		font-size: 1.3em;
+	}
+}
+
+.ar-linkBlock {
+	margin-right: 2em;
+}
+
+main {
+	height: 100%;
+	width: 90%;
+	margin: 0 auto;
+}
+
+main > h2 {
+	display: block;
+	margin-top: 1em;
+	font-weight: 700;
+}
+
+.importFile {
+    color: #fff;
+    background-color: #63d042c9;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 3px 3px;
+
+  }
+
+  .importFile:hover {
+	color: #c1c1c1;
+	border-color: #2ad70b83;
+	background-color: #2ad70b83;
+	transition: 0.5s;
+  }
+
+  .importFile > input {
+    display: none;
+  }
+
+label input[type=number] {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding-left: 0.5em;
+  height: 2em;
+  flex: 1;
+  width: 20%;
+  max-width: 410px;
+  background: #eaedf2;
+  font-size: 16px;
+}
+
+div.strict {
+	border: 2px solid #e5e7eb;
+	border-radius:1em;
+	padding: 1em;
+}
+
+.howToUse {
+	list-style-type: decimal;
+}
+
+.noShown {
+	display: none;
+}
+
+.modal-content {
+	background-color: #0f172b;
+}
+
+.modal-header {
+	border-bottom: 2px solid #46ff3278 !important;
+}
+
+.modal-footer {
+	border-top: 2px solid #46ff3278 !important;
+	justify-content: space-between;
+	
+}
+
+.loading {
+	height: 60%;
+	width: fit-content;
+	margin: auto;
+	margin-left: 12em;
+	margin-top: 5em;
+}
+
+.success, .fail {
+	margin: 0 auto;
+}
+
+.success > img {
+	margin: 0 auto;
+	display: block;
+}
+
+.fail > img {
+	margin: 0 auto;
+	display: block;
+}
+
+.pulse-container {
+	width: 170%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+  }
+  
+  .pulse-bubble {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: #3ff9dc;
+  }
+
+  @keyframes pulse {
+	from {
+	  opacity: 1;
+	  transform: scale(1);
+	}
+	to {
+	  opacity: .25;
+	  transform: scale(.75);
+	}
+  }
+  
+  .pulse-bubble-1 {
+	  animation: pulse .4s ease 0s infinite alternate;
+  }
+  .pulse-bubble-2 {
+	  animation: pulse .4s ease .2s infinite alternate;
+  }
+  .pulse-bubble-3 {
+	  animation: pulse .4s ease .4s infinite alternate;
+  }

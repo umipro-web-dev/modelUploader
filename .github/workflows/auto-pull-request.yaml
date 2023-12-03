@@ -1,0 +1,51 @@
+name: auto-pull-request
+on: create
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  BASE_BRANCH: master
+  REVIEWER: umipro-web-dev
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+
+            const commitObj = await github.git.getCommit({
+                owner: "${{ github.repository_owner }}",
+                repo: "${{ github.event.repository.name }}",
+                commit_sha: "${{github.sha}}"
+              })
+
+            const commitMsg = commitObj.data.message;
+            const currentBranch = "${{ github.event.ref }}"
+
+            // base-> マージ先のブランチ
+            // head-> マージ元のブランチ
+            await github.pulls.create({
+              owner: "${{github.repository_owner}}",
+              repo: "${{ github.event.repository.name }}",
+              title: commitMsg,
+              base: "${{ env.BASE_BRANCH }}",
+              head: currentBranch,
+              body: "プルリクです"
+              })
+
+            const pulls = await github.pulls.list({
+              owner: "${{ github.repository_owner }}",
+              repo: "${{ github.event.repository.name }}"
+              });
+
+            await github.pulls.requestReviewers({
+              owner: "${{ github.repository_owner }}",
+              repo: "${{ github.event.repository.name }}",
+              pull_number: pulls.data[0].number,
+              reviewers: ["${{github.repository_owner}}"]
+              });
+            
+
+
+      
+
