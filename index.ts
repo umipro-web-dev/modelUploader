@@ -16,6 +16,7 @@ interface reqType {
     encodedFile: string
 }
 app.use(express.json())
+app.use(express.static(path.join(__dirname, "public")))
 app.post("/upload", async (req, res)=>{
 
     execSync('cd ar && git config user.name "umipro-web-dev"')
@@ -49,7 +50,17 @@ app.post("/upload", async (req, res)=>{
 
     execSync("cd ar && git checkout main")
 
-    execSync('cd ar && git pull origin main', shellType)
+    try {
+        execSync('cd ar && git pull origin main', shellType)
+    } catch(e) {
+        res.status(500).json({
+            errCode: 5,
+            msg: "internal server error: token expired. please contact admin."
+        })
+        return
+    }
+
+    
 
     const modelFiles = await decompress(rawFile, undefined, {
         filter: file => path.basename(file.path) === "obj.mtl" || path.basename(file.path) === "tinker.obj"
@@ -84,7 +95,17 @@ app.post("/upload", async (req, res)=>{
 
     } catch(e){}
 
+    try {
+
     execSync('cd ar && git push origin HEAD', shellType)
+
+    } catch(e) {
+        res.status(500).json({
+            errCode: 5,
+            msg: "internal server error: token expired. please contact admin."
+        })
+        return
+    }
     res.status(200).json({
         errCode: null,
         msg: "successed"

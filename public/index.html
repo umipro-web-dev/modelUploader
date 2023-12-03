@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="./style.css">
+	
+</head>
+<body>
+	<header>
+		<a href="/">
+		<div class="titleBlock">
+			<h>ar-camera</h>
+		</div>
+		</a>
+		<a href="https://ar-camera.onrender.com" rel="noopener noreffer" target="_blank">
+			<div class="ar-linkBlock">
+				<h>arカメラはこちら</h>
+				<img src="./newtab.png" width="30" height="30">
+			</div>
+		</a>
+	</header>
+	<main>
+		<h2>ar-camera ファイルアップロード</h2>
+		<br>
+		<p>arカメラに投影するモデルをこちらでアップロードできます。</p>
+		<br>
+		<h4>使用方法</h4>
+		<br>
+		<ul class="howToUse">
+			<li>4桁番号を入力する。</li>
+			<li>「ファイルを選択」からファイルをアップロードする。</li>
+			<li>「アップロード」を押してアップロードを完了させる。</li>
+		</ul>
+		<br>
+
+		<label class="">あなたの4桁番号： <input type="number" placeholder="例）1701" max="9999" min="1000" id="4num"></label>
+		<br>
+		<br>
+
+		アップロードしたいファイル： <label class="importFile"><input type="file" accept=".zip" id="file">ファイルを選択</label><span>　</span><span id="fileName">ファイルが選択されていません</span>
+		<br>
+		<br>
+		<div class="strict">
+		<p>アップロードするファイルについて（基本はCADソフトからダウンロードしたファイルで大丈夫です。）</p>
+		<p>※"~.zip"の形式のファイルをアップロードしてください。</p>
+		
+		<p>※アップロードするファイルは基本CADソフトからダウンロードしたもので大丈夫ですが、以下の制限があります。</p>
+		<ul>
+			<li>zipファイルであること。</li>
+			<li>直下に以下のファイルを含んでいること。</li>
+			<ol># object.mtl</ol>
+			<ol># tinker.obj</ol>
+		</ul>
+		</div>
+		<br>
+		<button class="importFile btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="uploadFile()">アップロード</button> <span>　　※ファイルのアップロードには3〜4秒ほどかかります。</span>
+		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered h-50">
+			  <div class="modal-content h-50">
+				<div class="modal-header">
+				  <h1 class="modal-title fs-5" id="staticBackdropLabel">アップロード</h1>
+				</div>
+				<div class="modal-body h-50">
+					<div class="loading">
+						<div class="spinner-box">
+							<div class="pulse-container">  
+						  		<div class="pulse-bubble pulse-bubble-1"></div>
+						  		<div class="pulse-bubble pulse-bubble-2"></div>
+						  		<div class="pulse-bubble pulse-bubble-3"></div>
+							</div>
+					  	</div>
+					</div>
+					<div class="success noShown">
+						<img src="./checkmark.jpeg" alt="" width="200" height="200">
+					</div>
+					<div class="fail noShown">
+						<img src="./batsu.png" alt="" width="150" height="150">
+					</div>
+				  
+				</div>
+				<div class="modal-footer">
+				  <span class="modal-text" id="modal-text">ファイルのアップロードには3〜4秒ほどかかります。</span>
+				  <button type="button" class="btn btn-primary noShown" data-bs-dismiss="modal" id="closeBtn">Close</button>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		  
+		<br>
+		<br>
+
+	</main>
+	<script src="script.js"></script>
+</body>
+</html>
