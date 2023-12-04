@@ -33,12 +33,14 @@ header a:hover {
 .titleBlock {
 	height: fit-content;
 
-	h {
+	
+}
+
+.titleBlock h {
 		display: block;
 		margin-left: 1em;
 		font-weight: 700;
 		font-size: 1.3em;
-	}
 }
 
 .ar-linkBlock {
