@@ -1,4 +1,4 @@
-import express, { raw } from "express"
+import express from "express"
 import * as fs from "fs"
 import {execSync} from "child_process"
 import {fileTypeFromBuffer} from 'file-type';
@@ -11,10 +11,18 @@ const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
 
-interface reqType {
-    eachNumber: number,
+interface uploadReqType {
+    eachNumber: string,
     encodedFile: string
 }
+
+interface msgReqType {
+    name: string,
+	schoolName: string,
+    personalNum: string,
+    msgBody: string
+}
+
 app.use(express.json())
 app.use(express.static(path.join(__dirname, "public")))
 app.post("/upload", async (req, res)=>{
@@ -30,7 +38,10 @@ app.post("/upload", async (req, res)=>{
         return
     }
 
-    const body = req.body as reqType
+    const body = req.body as uploadReqType
+
+    console.log(`[ proccessing request: ${body.eachNumber} ]: begin`)
+    
 
     const rawFile = Buffer.from(body.encodedFile, "base64")
 
@@ -39,6 +50,7 @@ app.post("/upload", async (req, res)=>{
             errCode: 2,
             msg: "invalid content type: file should be zip"
         })
+        console.log(`[ proccessing request: ${body.eachNumber} ]: end`)
         return 
     }
 
@@ -57,6 +69,7 @@ app.post("/upload", async (req, res)=>{
             errCode: 5,
             msg: "internal server error: token expired. please contact admin."
         })
+        console.log(`[ proccessing request: ${body.eachNumber} ]: end`)
         return
     }
 
@@ -70,28 +83,30 @@ app.post("/upload", async (req, res)=>{
 
     modelFiles.forEach(file => fs.writeFileSync(path.join(objectsPath,path.basename(file.path)), file.data))
 
-    if (!fs.existsSync(`./ar/objects/${body.eachNumber.toString()}/tinker.obj`)) {
+    if (!fs.existsSync(`./ar/objects/${body.eachNumber}/tinker.obj`)) {
         execSync('cd ar && git pull origin main', shellType)
         res.status(415).json({
             errCode: 3,
             msg: "invalid content type: zip file should be include tinker.obj"
         })
+        console.log(`[ proccessing request: ${body.eachNumber} ]: end`)
         return
     }
 
-    if (!fs.existsSync(`./ar/objects/${body.eachNumber.toString()}/obj.mtl`)) {
+    if (!fs.existsSync(`./ar/objects/${body.eachNumber}/obj.mtl`)) {
         execSync('cd ar && git pull origin main', shellType)
         res.status(415).json({
             errCode: 4,
             msg: "invalid content type: zip file should be include obj.mtl"
         })
+        console.log(`[ proccessing request: ${body.eachNumber} ]: end`)
         return
     }
 
     execSync("cd ar && git add .", shellType)
     try {
     
-    execSync(`cd ar && git commit -m "upload by user: ${body.eachNumber.toString()}"`, shellType)
+    execSync(`cd ar && git commit -m "upload by user: ${body.eachNumber}"`, shellType)
 
     } catch(e){}
 
@@ -104,12 +119,43 @@ app.post("/upload", async (req, res)=>{
             errCode: 5,
             msg: "internal server error: token expired. please contact admin."
         })
+        console.log(`[ proccessing request: ${body.eachNumber} ]: end`)
         return
     }
     res.status(200).json({
         errCode: null,
         msg: "successed"
     })
+    console.log(`[ proccessing request: ${body.eachNumber} ]: end`)
+})
+
+app.post("/submitMsg", async (req, res) =>{
+    const msgJson = req.body as msgReqType
+
+    const expandedMsg = 
+    `
+    ユーザーからメッセージが送信されました。
+    名前：${msgJson.name}
+    中学校名：${msgJson.schoolName}
+    4桁番号: ${msgJson.personalNum}
+    本文：
+    ${msgJson.msgBody}
+    
+    
+    ${new Date().toLocaleString("ja")}
+    `
+
+    const fetchRes = await fetch("https://notify-api.line.me/api/notify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Authorization": `Bearer ${process.env.LINE_NOTIFY_TOKEN}`
+        },
+        body: `message=${encodeURIComponent(expandedMsg)}`
+      })
+
+    res.status(fetchRes.status).send();
+
 })
 
 

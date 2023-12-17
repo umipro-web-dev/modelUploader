@@ -7,6 +7,11 @@ const modalFailElement = document.querySelector(".fail");
 const modalLoadingElement = document.querySelector(".loading");
 const modalCloseElement = document.getElementById("closeBtn");
 const fileNameElement = document.getElementById("fileName");
+const msgNameElement = document.getElementById("name");
+const msgPersonalNumberElement = document.getElementById("personalNum");
+const schoolNameElement = document.getElementById("schoolName");
+const msgBodyElement = document.getElementById("msgBodyText");
+
 
 //onload
 const files = fileElement === null || fileElement === void 0 ? void 0 : fileElement.files;
@@ -121,3 +126,34 @@ const uploadFile = async () => {
     
 };
 
+const submitMsg = async () => {
+    const nameStr = msgNameElement.value;
+	const schoolNameStr = schoolNameElement.value;
+    const personalNumStr = msgPersonalNumberElement.value;
+    const msgBodyStr = msgBodyElement.value;
+    if (!nameStr || !msgBodyStr) {
+        alert("名前もしくは本文が入力されていません。");
+        return;
+    }
+    const reqBody = {
+        name: nameStr,
+		schoolName: schoolNameStr,
+        personalNum: personalNumStr,
+        msgBody: msgBodyStr
+    };
+    const res = await fetch("/submitMsg", {
+        method: "POST",
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify(reqBody)
+    });
+
+	if (res.status.toString()[0] === "4") {
+		alert(`エラーが発生しました。もう一度お試しください。(${res.status})`)
+	} else if (!res.ok) {
+		alert(`サーバーエラーが発生しました。もう一度お試しください。(${res.status})`)
+	}
+
+	alert("送信が正常に完了しました。")
+};
