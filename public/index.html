@@ -65,15 +65,7 @@
 				  <h1 class="modal-title fs-5" id="staticBackdropLabel">アップロード</h1>
 				</div>
 				<div class="modal-body h-50">
-					<div class="loading">
-						<div class="spinner-box">
-							<div class="pulse-container">  
-						  		<div class="pulse-bubble pulse-bubble-1"></div>
-						  		<div class="pulse-bubble pulse-bubble-2"></div>
-						  		<div class="pulse-bubble pulse-bubble-3"></div>
-							</div>
-					  	</div>
-					</div>
+					<div class="loader loading">Loading...</div>
 					<div class="success noShown">
 						<img src="./checkmark.jpeg" alt="" width="200" height="200">
 					</div>
@@ -83,7 +75,7 @@
 				</div>
 				<div class="modal-footer">
 				  <span class="modal-text" id="modal-text">ファイルのアップロードには3〜4秒ほどかかります。</span>
-				  <button type="button" class="btn btn-primary noShown" data-bs-dismiss="modal" id="closeBtn">Close</button>
+				  <button type="button" class="btn btn-primary noShown" data-bs-dismiss="modal" id="closeBtn">閉じる</button>
 				</div>
 			  </div>
 			</div>
@@ -91,7 +83,61 @@
 		  
 		<br>
 		<br>
+		<br>
+		<br>
+		<div class="reqForm noShown">
+			<h3>問い合わせフォーム</h3>
+			<br>
+			<p>このサイトに対する感想、改善提案、不具合の報告、サーバーエラーの発生等あればこのこのフォームから管理者にお知らせください。</p>
+			<p>（エラー報告の場合はエラーメッセージを本文に添付してもらえると助かります。）</p>
+			<label>
+				<span>名前（ニックネーム可）【必須】：</span>
+				<br>
+				<br>
+				<input type="text" class="form-input" id="name" required>
+			</label>
+			<br>
+			<br>
+			<label>
+				<span>中学校名：</span>
+				<br>
+				<br>
+				<input type="text" class="form-input" id="schoolName">
+			</label>
+			<br>
+			<br>
+			<label>
+				<span>4桁番号：</span>
+				<br>
+				<br>
+				<input type="text" class="form-input" id="personalNum">
+			</label>
+			<br>
+			<br>
+			<label>
+				<span>本文【必須】：</span>
+				<br>
+				<br>
+				<textarea class="form-input" cols="30" rows="10" id="msgBodyText" required></textarea>
+			</label>
+			<br>
+			<br>
+			<button class="btn importFile" onclick="submitMsg()">　送信　</button>
+			<br>
+			<br>
+		</div>
 	</main>
+	<footer>
+		<span class="author">
+			<h>作者：umipro</h>
+			<br>
+			<a href="https://github.com/umipro-web-dev" target="_blank" rel="noopener noreferrer"><img src="/github.png"
+					alt="github" width="30"></a>
+			<a href="https://zenn.dev/umipro_web" target="_blank" rel="noopener noreferrer"><img src="/zenn.png" alt="zenn"
+					width="30"></a>
+		</span>
+
+	</footer>
 	<script src="script.js"></script>
 </body>
 </html>
