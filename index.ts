@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, "public")))
 app.post("/upload", async (req, res)=>{
 
     execSync('cd ar && git config user.name "umipro-web-dev"')
-    execSync('cd ar && git config user.email "113771739+umipro-web-dev@users.noreply.github.com"')
+    execSync(`cd ar && git config user.email "${process.env.PRIVATE_GIT_MAILADRR}"`)
     
     if (req.headers["content-type"] !== "application/json") {
         res.status(415).json({

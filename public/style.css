@@ -1,16 +1,41 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+
+body[id="dark"] {
+	--back-color: #0f172b !important;
+	--text-color: #e5e7eb !important;
+	--header-color: black !important;
+	--strict-color: #e5e7eb;
+	--btn-color: #63d042c9;
+	--header-hover: #c0bcbc;
+}
+
+body {
+	--back-color: #ffffff;
+	--text-color: #000;
+	--header-color: rgb(137, 188, 255);
+	--strict-color: #000;
+	--btn-color: #2cac04c9;
+	--header-hover: #525151;
+}
+
+body * {
+	transition: 0.5s;
+}
+
+
+
 html, body {
 	margin: 0 !important;
 	height: fit-content;
-	background-color: #0f172b;
-	color: #e5e7eb;
+	background-color: var(--back-color);
+	color: var(--text-color);
 	font-family: 'Noto Sans JP', sans-serif;
 }
 
 header {
-	background-color: black;
+	background-color: var(--header-color);
 	border-bottom: 3px solid #46ff32c1;
-	color: #e5e7eb;
+	color: var(--text-color);
 	height: 5em;
 	display: flex;
 	flex-wrap: wrap;
@@ -20,14 +45,19 @@ header {
 }
 
 header a {
-	color: #e5e7eb;
+	color: var(--text-color);
 	text-decoration: none;
 	
 }
 
 header a:hover {
-	color: #c0bcbc;
+	color: var(--header-hover);
 	transition: 0.3s;
+}
+
+.header-left {
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .titleBlock {
@@ -60,8 +90,8 @@ main > h2 {
 }
 
 .importFile {
-    color: #fff;
-    background-color: #63d042c9;
+    color: white;
+    background-color: var(--btn-color);
     cursor: pointer;
     border-radius: 5px;
     padding: 3px 3px;
@@ -103,7 +133,7 @@ label input[type=number] {
   }
 
 div.strict {
-	border: 2px solid #e5e7eb;
+	border: 2px solid var(--strict-color);
 	border-radius:1em;
 	padding: 1em;
 }
@@ -117,7 +147,7 @@ div.strict {
 }
 
 .modal-content {
-	background-color: #0f172b;
+	background-color: var(--back-color);
 }
 
 .modal-header {
@@ -210,7 +240,7 @@ div.strict {
 		flex-wrap: wrap;
 		padding-top: 1em;
 		padding-bottom: 1em;
-		background-color: black;
+		background-color: var(--header-color);
 		border-top: 3px solid #46ff32c1;
 		margin-top: 1.5em;
 		justify-content:end;
@@ -328,3 +358,62 @@ div.strict {
 		}
 	  }
 	  
+	label.toggle {
+		position: relative;
+		display: flex;
+		align-items: center;
+		width: fit-content;
+	}
+	
+	input.toggle-input {
+		position: absolute;
+		width: 0;
+		height: 0;
+		display: none;
+	}
+	
+	.title {
+		margin-left: 1vw;
+		margin-right: 2vw;
+		margin-bottom: 0.5vh;
+		font-size: 0.9em;
+	}
+	
+	.base {
+		width: 56px;
+		border-radius: 16px;
+		border: 1.5px solid #fff;
+		height: 32px;
+		background-color: #fbc5c5;
+	}
+	
+	input:checked~.base {
+		background-color: black;
+		transition: 0.5s;
+	}
+	
+	.circle {
+		position: absolute;
+		top: 4px;
+		left: 4px;
+		width: 24px;
+		height: 24px;
+		border-radius: 12px;
+		background-color: gray;
+	}
+	
+	.switch {
+		position: relative;
+	}
+	
+	
+	input:checked~.circle {
+		transform: translateX(100%);
+		background-color: white;
+		transition: 0.5s;
+	}
+	
+	input:not(checked)~.circle {
+		transform: translateX(0);
+		transition: 0.5s;
+	}
