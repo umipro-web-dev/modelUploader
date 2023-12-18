@@ -11,6 +11,8 @@ const msgNameElement = document.getElementById("name");
 const msgPersonalNumberElement = document.getElementById("personalNum");
 const schoolNameElement = document.getElementById("schoolName");
 const msgBodyElement = document.getElementById("msgBodyText");
+const bodyElem = document.querySelector("body")
+const modeBoxElem = document.querySelector(".toggle-input")
 
 
 //onload
@@ -23,6 +25,25 @@ fileElement.addEventListener("change", () => {
     const file = files ? files[0] : null;
     fileNameElement.textContent = file ? "選択済み： "+file.name : "ファイルが選択されていません";
 });
+
+window.onload = () => {
+    const isDarkMode = matchMedia("(prefers-color-scheme: dark)").matches
+
+    if (true) {
+        bodyElem.setAttribute("id", "dark")
+        modeBoxElem.checked = true
+    } else {
+        bodyElem.setAttribute("id", "light")
+    }
+}
+
+modeBoxElem.addEventListener("input", ()=>{
+    if (modeBoxElem.checked) {
+        bodyElem.setAttribute("id", "dark")
+    } else {
+        bodyElem.setAttribute("id", "light")
+    }
+})
 
 const handleError = (errCode) => {
     modalLoadingElement.classList.add("noShown");
