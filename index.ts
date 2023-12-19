@@ -130,6 +130,7 @@ app.post("/upload", async (req, res)=>{
 })
 
 app.post("/submitMsg", async (req, res) =>{
+    try {
     const msgJson = req.body as msgReqType
 
     const expandedMsg = 
@@ -155,6 +156,10 @@ app.post("/submitMsg", async (req, res) =>{
       })
 
     res.status(fetchRes.status).send();
+
+    } catch(e) {
+        res.status(500).send();
+    }
 
 })
 

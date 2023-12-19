@@ -172,8 +172,10 @@ const submitMsg = async () => {
 
 	if (res.status.toString()[0] === "4") {
 		alert(`エラーが発生しました。もう一度お試しください。(${res.status})`)
+        return
 	} else if (!res.ok) {
 		alert(`サーバーエラーが発生しました。もう一度お試しください。(${res.status})`)
+        return
 	}
 
 	alert("送信が正常に完了しました。")
