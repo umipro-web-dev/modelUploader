@@ -71,6 +71,9 @@ const handleError = (errCode) => {
 		case 12:
 			modalTextElement.textContent = `ファイル形式エラー：ファイルに不明なエラーがあります。(${errCode})`;
 			break;
+        case 13:
+            modalTextElement.textContent = `番号エラー：番号が入力されていません。(${errCode})`;
+            break;
         default:
             modalTextElement.textContent = "サーバーエラー：サーバーでエラーが発生しました。管理者に連絡してください。(500)";
             break;
@@ -93,6 +96,13 @@ const uploadFile = async () => {
     const fourNum = numElement === null || numElement === void 0 ? void 0 : numElement.value;
     const files = fileElement === null || fileElement === void 0 ? void 0 : fileElement.files;
     if (fourNum === null || files === null) {
+        handleError(11)
+		modalCloseElement.classList.remove("noShown")
+		return;
+    }
+    if (fourNum.replace(" ", "") === "") {
+        handleError(13);
+        modalCloseElement.classList.remove("noShown")
         return;
     }
     const file = files[0];
